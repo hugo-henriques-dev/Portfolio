@@ -1,0 +1,1006 @@
+/* ============================================================
+   VARIÁVEIS GLOBAIS
+   ============================================================ */
+:root {
+  /* Tipografia */
+  --font-mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
+
+  /* Layout */
+  --radius: 6px;
+  --radius-editor: 10px;
+  --sidebar-width: 64px;
+
+  /* Cores de fundo */
+  --bg-page: #111111;
+  --bg-main: #181818;
+  --bg-editor: #1f1f1f;
+  --bg-editor-tab: #252526;
+  --bg-editor-active: #1e1e1e;
+
+  /* Bordas */
+  --border-color: #313131;
+  --border-editor: #2b2b2b;
+
+  /* Texto */
+  --text-primary: #cccccc;
+  --text-muted: #6e7681;
+
+  --text-editor-tab: #9da3ad;
+  --text-editor-close: #8b949e;
+  --text-line-number: #606770;
+
+  /* Cursor */
+  --cursor-color: #d4d4d4;
+
+  /* Cores de destaque — usadas também fora da janela de código */
+  --accent-blue: #569cd6;
+  --accent-green: #6a9955;
+  --accent-purple: #c586c0;
+
+  /* Sintaxe da janela de código — Dark+ (usadas só aqui) */
+  --syntax-keyword: var(--accent-blue);
+  --syntax-class: #4ec9b0;
+  --syntax-function: #dcdcaa;
+  --syntax-property: #9cdcfe;
+  --syntax-string: #ce9178;
+
+  /* Estados / Efeitos */
+  --bg-glow: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  --accent-blue-hover: color-mix(in srgb, var(--accent-blue) 8%, transparent);
+  --accent-blue-active: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  --accent-blue-focus: color-mix(in srgb, var(--accent-blue) 25%, transparent);
+  --accent-blue-glow: color-mix(in srgb, var(--accent-blue) 15%, transparent);
+
+  --accent-green-glow: color-mix(in srgb, var(--accent-green) 30%, transparent);
+
+  --editor-close-hover: rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.35);
+
+  /* Animações */
+  --grid-size: 30px;
+  --grid-move-x: 30px;
+  --grid-move-y: 30px;
+  --grid-speed: 30s;
+  --grid-color: rgba(255, 255, 255, 0.025);
+
+  --glow-speed: 20s;
+  --glow-move-x: 15vw;
+  --glow-move-y: 15vh;
+}
+
+/* ============================================================
+   TEMA CLARO - sobrepõe variáveis quando data-bs-theme="light"
+   ============================================================ */
+[data-bs-theme="light"] {
+  /* Cores de fundo */
+  --bg-page: #f5f5f5;
+  --bg-main: #ffffff;
+  --bg-editor: #f3f3f3;
+  --bg-editor-tab: #e8e8e8;
+  --bg-editor-active: #ffffff;
+
+  /* Bordas */
+  --border-color: #d8d8d8;
+  --border-editor: #dcdcdc;
+
+  /* Texto */
+  --text-primary: #1e1e1e;
+  --text-muted: #57606a;
+
+  --text-editor-tab: #444444;
+  --text-editor-close: #767676;
+  --text-line-number: #a0a0a0;
+
+  /* Cursor */
+  --cursor-color: #1e1e1e;
+
+  /* Verde de destaque */
+  --accent-green: #1a7f37;
+
+  /* Sintaxe da janela de código - Light+ */
+  --syntax-keyword: #0000ff;
+  --syntax-class: #267f99;
+  --syntax-function: #795e26;
+  --syntax-property: #001080;
+  --syntax-string: #a31515;
+
+  /* Estados / Efeitos */
+  --bg-glow: color-mix(in srgb, var(--accent-blue) 22%, transparent);
+  --accent-green-glow: color-mix(in srgb, var(--accent-green) 45%, transparent);
+
+  --editor-close-hover: rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.12);
+
+  /* Animações */
+  --grid-color: rgba(0, 0, 0, 0.035);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-page);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -20vh;
+  right: -20vw;
+  bottom: -20vh;
+  left: -20vw;
+
+  background-image: radial-gradient(circle at 50vw 40vh, var(--bg-glow), transparent 45%);
+
+  pointer-events: none;
+  z-index: -2;
+  will-change: transform;
+
+  animation: background-glow var(--glow-speed) ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: calc(var(--grid-size) * -1);
+
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+
+  background-size: var(--grid-size) var(--grid-size);
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
+
+  animation: background-grid var(--grid-speed) linear infinite;
+}
+
+/* ============================================================
+   ANIMAÇÕES
+   ============================================================ */
+/* Glow ambiente do fundo */
+@keyframes background-glow {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(var(--glow-move-x), var(--glow-move-y));
+  }
+}
+
+/* Movimento subtil da grelha de background */
+@keyframes background-grid {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(var(--grid-move-x), var(--grid-move-y));
+  }
+}
+
+/* Seta indicadora de scroll */
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* Indicador de estado online */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Anima continuamente o >>> */
+@keyframes prompt-shift {
+
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: .8;
+  }
+
+  50% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+}
+
+/* Cursor estilo editor */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+h2,
+h3.card-title {
+  font-family: var(--font-mono);
+}
+
+h2 {
+  width: fit-content;
+}
+
+h2::before {
+  content: "//";
+  color: var(--accent-green);
+  display: inline-block;
+  margin-right: 0.4em;
+  transition: transform 0.5s ease;
+}
+
+h2:hover::before {
+  transform: rotate(25deg);
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  margin-top: 0.5rem;
+  background: var(--accent-blue);
+  border-radius: var(--radius);
+  transition: width 0.4s ease;
+}
+
+h2:hover::after {
+  width: 100%;
+}
+
+/* ============================================================
+   BARRA LATERAL DE NAVEGAÇÃO
+   ============================================================ */
+body.has-sidebar {
+  padding-left: var(--sidebar-width);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  z-index: 1030;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: var(--sidebar-width);
+  padding: 1.25rem 0;
+
+  background: var(--bg-main);
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex: 1;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.sidebar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: var(--sidebar-width);
+  height: 44px;
+
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  text-decoration: none;
+
+  border-left: 2px solid transparent;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-link-github {
+  margin-top: 1.5rem;
+}
+
+.sidebar-link::before,
+.sidebar-status::before,
+.theme-toggle::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 20px);
+  transform: translateY(-50%) translateX(-4px);
+
+  padding: 0.3rem 0.6rem;
+  white-space: nowrap;
+
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-primary);
+
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus-visible {
+  color: var(--accent-blue);
+  background-color: var(--accent-blue-hover);
+}
+
+.sidebar-link:hover::before,
+.sidebar-link:focus-visible::before,
+.sidebar-status:hover::before,
+.theme-toggle:hover::before,
+.theme-toggle:focus-visible::before {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+
+.sidebar-link.active,
+.sidebar-link[aria-current="page"] {
+  color: var(--accent-blue);
+  background-color: var(--accent-blue-active);
+  border-left-color: var(--accent-blue);
+  transform: translateX(2px);
+}
+
+.sidebar-link i {
+  transition: transform 0.25s ease;
+}
+
+.sidebar-link:hover i,
+.sidebar-link:focus-visible i {
+  transform: translateY(-1px) scale(1.25);
+}
+
+.sidebar-status {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.25rem;
+}
+
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  color: var(--text-muted);
+  font-size: 1.05rem;
+
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  background-color: var(--accent-blue-hover);
+}
+
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Botão de abrir/fechar - só existe visualmente em mobile */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1040;
+
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-primary);
+  font-size: 1.2rem;
+
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  background-color: var(--accent-blue-hover);
+}
+
+.sidebar-toggle:active {
+  transform: scale(0.92);
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1020;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--accent-green-glow);
+
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   HERO / INTRODUÇÃO
+   ============================================================ */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-greeting {
+  margin-bottom: 0.25rem;
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+}
+
+.hero-name::before {
+  content: ">>>";
+  margin-right: 0.75rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+  font-size: 0.85em;
+  opacity: 0.8;
+  display: inline-block;
+
+  animation: prompt-shift 2s ease-in-out infinite;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.hero-scroll-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-scroll a {
+  display: inline-block;
+  color: var(--accent-blue);
+  font-size: 1.8rem;
+  text-decoration: none;
+
+  animation: bounce 1.8s infinite;
+}
+
+.hero-scroll a:hover {
+  color: var(--text-primary);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-actions .btn:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   CODE WINDOW
+   ============================================================ */
+.code-window {
+  overflow: hidden;
+  border: 1px solid var(--border-editor);
+  border-radius: var(--radius-editor);
+  background: var(--bg-editor-active);
+  box-shadow: var(--shadow-card);
+}
+
+.code-tabbar {
+  display: flex;
+  align-items: flex-end;
+  background: var(--bg-editor);
+  border-bottom: 1px solid var(--border-editor);
+}
+
+.code-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem 0.75rem;
+  color: var(--text-editor-tab);
+
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  background: var(--bg-editor-tab);
+  border-right: 1px solid var(--border-editor);
+  position: relative;
+}
+
+.tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  margin-left: 0.25rem;
+
+  color: var(--text-editor-close);
+  font-family: Arial, sans-serif;
+  font-size: 1.8rem;
+  line-height: 1;
+
+  border-radius: 6px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.tab-close:hover {
+  color: var(--text-primary);
+  background-color: var(--editor-close-hover);
+  cursor: pointer;
+}
+
+.code-message {
+  position: absolute;
+
+  top: 45px;
+  right: 15px;
+
+  padding: 0.5rem 0.8rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+
+  color: var(--text-primary);
+  background: var(--bg-main);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+
+  opacity: 0;
+  transform: translateY(-5px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.code-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.code-tab.active {
+  color: var(--text-primary);
+  background: var(--bg-editor-active);
+}
+
+.code-tab.active::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-blue);
+}
+
+.file-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.file-name {
+  letter-spacing: 0.1px;
+}
+
+.code-window pre {
+  margin: 0;
+  padding: 1.15rem 1.25rem 1.25rem;
+  background: transparent;
+  overflow-x: auto;
+}
+
+.code-window code {
+  font-family: var(--font-mono);
+  font-size: 0.96rem;
+  line-height: 1.9;
+}
+
+.line-number {
+  display: inline-block;
+  width: 2.2rem;
+  color: var(--text-line-number);
+  user-select: none;
+}
+
+.code-line.current-line .line-number {
+  color: var(--text-primary);
+}
+
+.code-line {
+  display: block;
+}
+
+.code-line.current-line {
+  background: var(--accent-blue-hover);
+}
+
+.keyword {
+  color: var(--syntax-keyword);
+}
+
+.class-name {
+  color: var(--syntax-class);
+}
+
+.function {
+  color: var(--syntax-function);
+}
+
+.property {
+  color: var(--syntax-property);
+}
+
+.string {
+  color: var(--syntax-string);
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--cursor-color);
+  vertical-align: text-bottom;
+
+  animation: blink 1s steps(1) infinite;
+}
+
+/* ============================================================
+   LAYOUT DAS SECÇÕES ABAIXO DA INTRODUÇÃO
+   ============================================================ */
+#about,
+#experience,
+#education,
+#contact {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#about {
+  max-width: 850px;
+  margin-inline: auto;
+}
+
+#about p+p {
+  margin-top: 1.25rem;
+}
+
+/* ============================================================
+   CARTÕES
+   ============================================================ */
+.card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#about .card-body,
+#experience .card-body,
+#education .card-body {
+  padding: 2rem 2.25rem;
+}
+
+#experience .card-title,
+#education .card-title {
+  margin-bottom: 0.45rem;
+}
+
+.card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px var(--accent-blue-glow),
+    var(--shadow-card);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent-blue);
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.2s ease;
+}
+
+.card:hover::before {
+  transform: scaleY(1);
+}
+
+.card a.btn::after {
+  content: " →";
+  transition: margin-left 0.2s ease;
+}
+
+.card a.btn:hover::after {
+  margin-left: 3px;
+}
+
+/* ============================================================
+   SKILLS / COMPETÊNCIAS
+   ============================================================ */
+.skill-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#filter-list .list-group-item {
+  font-family: var(--font-mono);
+  border-left: 3px solid transparent;
+}
+
+#filter-list .list-group-item::before {
+  content: "› ";
+  color: var(--accent-purple);
+}
+
+#filter-list .list-group-item.active {
+  border-left-color: var(--accent-blue);
+}
+
+#filter-list .list-group-item:hover:not(.active) {
+  border-left-color: var(--accent-green);
+}
+
+.progress-bar {
+  transition: width 1.4s ease;
+}
+
+/* ============================================================
+   PROJETOS
+   ============================================================ */
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.project-tech .badge {
+  font-family: var(--font-mono);
+}
+
+#project-filter .btn {
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   FORMULÁRIO DE CONTACTO
+   ============================================================ */
+.form-control:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 0.2rem var(--accent-blue-focus);
+}
+
+/* ============================================================
+   RESPONSIVIDADE - MEDIA QUERIES
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* Fundo */
+  body,
+  body::before,
+  body::after {
+    animation: none;
+  }
+
+  /* Sidebar / navegação */
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 200px;
+    align-items: stretch;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-link {
+    justify-content: flex-start;
+    gap: 0.75rem;
+    width: 150px;
+    margin-inline: auto;
+    padding-left: 0.75rem;
+  }
+
+  /* Em mobile mostra o texto ao lado do ícone em vez do tooltip */
+  .sidebar-link::before {
+    display: none;
+  }
+
+  .sidebar-link::after {
+    content: attr(data-tooltip);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .theme-toggle,
+  .sidebar-status {
+    align-self: center;
+  }
+
+  body.has-sidebar {
+    padding-left: 0;
+  }
+
+  /* Secções de conteúdo */
+  #about,
+  #experience,
+  #education,
+  #contact {
+    min-height: auto;
+    padding-block: 3rem;
+  }
+
+  #about .card-body,
+  #experience .card-body,
+  #education .card-body {
+    padding: 1.5rem 1.5rem;
+  }
+
+  #project-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Code window */
+  .code-window code {
+    font-size: 0.82rem;
+  }
+
+  .code-message {
+    left: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Hero */
+  h2::after {
+    width: 36px;
+  }
+
+  .hero-name {
+    font-size: 2rem;
+  }
+
+  /* Code window */
+  .code-window code {
+    font-size: 0.75rem;
+  }
+
+  .line-number {
+    width: 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="pt-PT" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Hugo Henriques | Portefólio</title>
+
+    <meta
+      name="description"
+      content="Portefólio de Hugo Henriques, estudante de Tecnologias e Programação de Sistemas de Informação, com foco em desenvolvimento backend."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Hugo Henriques | Portefólio" />
+    <meta
+      property="og:description"
+      content="Portefólio de Hugo Henriques, estudante de TPSI e programador backend."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_PT" />
+
+    <!-- Tema (aplicado cedo para evitar flash) -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.setAttribute("data-bs-theme", theme);
+        } catch (error) {
+          document.documentElement.setAttribute("data-bs-theme", "dark");
+        }
+      })();
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/images/terminal.png" />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="static/style.css" />
+
+    <!-- EmailJS-->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- JavaScript personalizado -->
+    <script src="static/script.js" defer></script>
+  </head>
+
+  <body class="has-sidebar">
+    <!-- Cabeçalho e navegação -->
+    <header>
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="mainSidebar"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <nav class="sidebar" id="mainSidebar" aria-label="Navegação principal">
+        <ul class="sidebar-nav">
+          <li>
+            <a
+              href="#hero"
+              class="sidebar-link active"
+              data-section="hero"
+              data-tooltip="Início"
+              aria-label="Início"
+              aria-current="page"
+            >
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#about"
+              class="sidebar-link"
+              data-section="about"
+              data-tooltip="Sobre"
+              aria-label="Sobre"
+            >
+              <i class="bi bi-person" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#experience"
+              class="sidebar-link"
+              data-section="experience"
+              data-tooltip="Experiência"
+              aria-label="Experiência"
+            >
+              <i class="bi bi-briefcase" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#education"
+              class="sidebar-link"
+              data-section="education"
+              data-tooltip="Formação"
+              aria-label="Formação"
+            >
+              <i class="bi bi-mortarboard" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#skills"
+              class="sidebar-link"
+              data-section="skills"
+              data-tooltip="Competências"
+              aria-label="Competências"
+            >
+              <i class="bi bi-code-slash" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#projects"
+              class="sidebar-link"
+              data-section="projects"
+              data-tooltip="Projetos"
+              aria-label="Projetos"
+            >
+              <i class="bi bi-folder2-open" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#contact"
+              class="sidebar-link"
+              data-section="contact"
+              data-tooltip="Contacto"
+              aria-label="Contacto"
+            >
+              <i class="bi bi-envelope" aria-hidden="true"></i>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://github.com/hugo-henriques-dev"
+              class="sidebar-link sidebar-link-github"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-tooltip="GitHub"
+              aria-label="GitHub"
+            >
+              <i class="bi bi-github" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          data-tooltip="Modo claro"
+          aria-label="Ativar modo claro"
+        >
+          <i class="bi bi-sun" aria-hidden="true"></i>
+        </button>
+        <div class="sidebar-status" data-tooltip="Disponível para novos projetos">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span class="visually-hidden">Disponível para novos projetos</span>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="container">
+      <!-- Introdução -->
+      <section id="hero" class="py-5">
+        <div class="row align-items-center gy-5 gy-lg-0">
+          <div class="col-lg-5">
+            <p class="hero-greeting">Olá, eu sou</p>
+            <h1 class="display-5 fw-bold hero-name">Hugo Henriques</h1>
+
+            <p class="lead">
+              Estudante de Tecnologias e Programação de Sistemas de Informação, focado em
+              desenvolvimento <em>backend</em>.
+            </p>
+
+            <div class="mt-4 hero-actions">
+              <a class="btn btn-primary" href="#projects"> Ver Projetos </a>
+
+              <a class="btn btn-outline-primary" href="#contact"> Contacto </a>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="card code-window">
+              <div class="card-body">
+                <div class="code-tabbar">
+                  <div class="code-tab active">
+                    <img src="static/images/python-logo.svg" alt="Python" class="file-icon" />
+                    <span class="file-name">developer.py</span>
+                    <span class="tab-close" aria-hidden="true">×</span>
+                    <div class="code-message"></div>
+                  </div>
+                </div>
+
+                <pre><code><span class="line-number">1</span><span class="keyword">class</span> <span class="class-name">Developer</span>:
+<span class="line-number">2</span>    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+<span class="line-number">3</span>        self.<span class="property">name</span> = <span class="string">"Hugo Henriques"</span>
+<span class="line-number">4</span>        self.<span class="property">languages</span> = [<span class="string">"Python"</span>, <span class="string">"JavaScript"</span>, <span class="string">"Java"</span>, <span class="string">"SQL"</span>]
+<span class="line-number">5</span>
+<span class="line-number">6</span>    <span class="keyword">def</span> <span class="function">introduce</span>(self):
+<span class="code-line current-line"><span class="line-number">7</span>        <span class="keyword">return</span> <span class="string" id="developer-status">"Always learning."</span><span class="cursor"></span></span></code>
+              </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-scroll">
+          <a href="#about" aria-label="Ir para a secção Sobre">
+            <i class="bi bi-chevron-double-down"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- Sobre mim -->
+      <section id="about" class="py-5">
+        <h2 class="mb-4">Sobre Mim</h2>
+
+        <article class="card">
+          <div class="card-body">
+            <p class="card-text">
+              Sou estudante de Tecnologias e Programação de Sistemas de Informação, com especial
+              interesse pelo desenvolvimento <em>backend</em>. Gosto de acompanhar a evolução de um
+              projeto desde a ideia inicial até à implementação, enfrentando cada desafio que surge
+              como oportunidade de crescimento profissional.
+            </p>
+
+            <p class="card-text mb-0">
+              Valorizo a escrita de código organizado, legível e bem estruturado, procurando
+              desenvolver soluções claras e fáceis de manter. O meu objetivo é continuar a evoluir
+              como programador <em>backend</em>, aprofundando os meus conhecimentos através da
+              prática e de novos projetos.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Experiência -->
+      <section id="experience" class="py-5">
+        <h2 class="mb-4">Experiência</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title h5">Projetos Pessoais</h3>
+                <p class="text-body-secondary small">Contínuo</p>
+                <p class="card-text">
+                  Desenvolvimento de projetos pessoais para consolidar conhecimentos, explorar novas
+                  tecnologias e aperfeiçoar competências de programação. Estes projetos permitem-me
+                  experimentar diferentes abordagens, resolver problemas e melhorar continuamente a
+                  qualidade e a organização do código.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title h5">Projetos Académicos</h3>
+                <p class="text-body-secondary small">2025 - Presente</p>
+                <p class="card-text">
+                  Realização de projetos académicos, aplicando programação orientada a objetos,
+                  desenvolvimento web, bases de dados e princípios de engenharia de software. Estes
+                  projetos permitiram consolidar conhecimentos através da resolução de problemas e
+                  da implementação de soluções práticas.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formação -->
+      <section id="education" class="py-5">
+        <h2 class="mb-4">Formação</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title h5">
+                  Curso Técnico Especialista em Tecnologias e Programação de Sistemas de Informação
+                </h3>
+
+                <p class="text-body-secondary small">2026 - Presente</p>
+
+                <p class="card-text">
+                  Formação em curso que tem contribuído para consolidar conhecimentos adquiridos
+                  anteriormente e desenvolver competências na área da informática e no contexto
+                  profissional, através de uma forte componente prática.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title h5">
+                  Curso Linguagens de Programação - Programação em Python
+                </h3>
+
+                <p class="text-body-secondary small">Concluído em 2025</p>
+
+                <p class="card-text">
+                  Formação que proporcionou os primeiros conhecimentos em algoritmos, Python, SQL,
+                  desenvolvimento web e engenharia de software, estabelecendo os fundamentos para a
+                  minha evolução na área do desenvolvimento de software.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Competências -->
+      <section id="skills" class="py-5">
+        <h2 class="mb-4">Competências</h2>
+
+        <div class="row g-4">
+          <aside class="col-md-3" aria-label="Filtrar competências por categoria">
+            <div id="filter-list" class="list-group"></div>
+          </aside>
+
+          <div class="col-md-9">
+            <!-- Competências geradas dinamicamente -->
+            <div id="skills-container" class="row g-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projetos -->
+      <section id="projects" class="py-5">
+        <h2 class="mb-4">Projetos</h2>
+
+        <div
+          id="project-filter"
+          class="btn-group flex-wrap mb-4"
+          role="group"
+          aria-label="Filtrar projetos por categoria"
+        ></div>
+        <!-- Projetos gerados dinamicamente -->
+        <div id="projects-container" class="row g-4"></div>
+      </section>
+
+      <!-- Contacto -->
+      <section id="contact" class="py-5">
+        <h2 class="mb-4">Contacto</h2>
+
+        <form id="contact-form" class="row g-3" method="post" action="#" novalidate>
+          <div class="col-md-6">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="name" name="name" required minlength="2" />
+            <div class="invalid-feedback">Indique o seu nome (mínimo 2 caracteres).</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required />
+            <div class="invalid-feedback">Indique um email válido.</div>
+          </div>
+
+          <div class="col-12">
+            <label for="subject" class="form-label">Assunto</label>
+            <input type="text" class="form-control" id="subject" name="subject" required />
+            <div class="invalid-feedback">Indique o assunto da mensagem.</div>
+          </div>
+
+          <div class="col-12">
+            <label for="message" class="form-label">Mensagem</label>
+            <textarea
+              class="form-control"
+              id="message"
+              name="message"
+              rows="5"
+              required
+              minlength="10"
+            ></textarea>
+            <div class="invalid-feedback">Escreva uma mensagem com pelo menos 10 caracteres.</div>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+          </div>
+
+          <div class="col-12">
+            <p id="form-feedback" class="mb-0" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; <span id="year">2026</span> Hugo Henriques.</p>
+
+      <small class="text-secondary">
+        Logo Python: © www.python.org (GPL), via
+        <a
+          href="https://commons.wikimedia.org/wiki/File:Python-logo-notext.svg"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Wikimedia Commons</a
+        >.
+      </small>
+
+      <small class="text-secondary d-block">
+        Ícone Terminal criado por
+        <a
+          href="https://www.flaticon.com/free-icons/terminal"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Royyan Wijaya - Flaticon</a
+        >.
+      </small>
+    </footer>
+  </body>
+</html>
