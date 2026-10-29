@@ -54,6 +54,18 @@ const skillsData = [
 
 const projectsData = [
   {
+    title: "PersonalGameLibrary",
+    description:
+      "Aplicação Android para gerir uma coleção pessoal de videojogos, desenvolvida em Kotlin " +
+      "com Jetpack Compose.<br><br>" +
+      "Permite adicionar, editar, pesquisar e eliminar jogos, com persistência local através do Room. " +
+      "Inclui funcionalidades como imagens de capa, sistema de favoritos, filtros avançados, estatísticas " +
+      "da coleção, modo escuro e ordenação por diferentes critérios.",
+    tech: ["Kotlin", "Jetpack Compose", "Room", "SQLite"],
+    category: "Mobile",
+    link: "https://github.com/hugo-henriques-dev/PersonalGameLibrary",
+  },
+  {
     title: "Painel de dados de Incêndios Florestais em Portugal",
     description:
       "Dashboard interativo sobre os incêndios florestais em Portugal, construído com dados do ICNF " +
@@ -68,7 +80,7 @@ const projectsData = [
   },
   {
     title: "Portefólio Pessoal",
-    description: 
+    description:
       "O website que está a visualizar. Desenvolvido para apresentar o meu percurso, competências e projetos, " +
       "com uma interface dinâmica construída em JavaScript.",
     tech: ["HTML", "CSS", "JavaScript", "Bootstrap"],
@@ -77,16 +89,16 @@ const projectsData = [
     buttonText: "Projeto atual",
   },
   {
-  title: "Jogo da Forca",
-  description:
-    "Projeto desenvolvido em grupo com tempo limitado, consistindo na implementação " +
-    "de um jogo da forca em Python com interface gráfica em Tkinter.<br><br>" +
-    "Inclui seleção aleatória de palavras, validação de entradas, gestão de tentativas " +
-    "e feedback visual ao utilizador.",
-  tech: ["Python", "Tkinter"],
-  category: "Outros",
-  link: "#projects",
-  buttonText: "Exercício prático"
+    title: "Jogo da Forca",
+    description:
+      "Projeto desenvolvido em grupo com tempo limitado, consistindo na implementação " +
+      "de um jogo da forca em Python com interface gráfica em Tkinter.<br><br>" +
+      "Inclui seleção aleatória de palavras, validação de entradas, gestão de tentativas " +
+      "e feedback visual ao utilizador.",
+    tech: ["Python", "Tkinter"],
+    category: "Outros",
+    link: "#projects",
+    buttonText: "Exercício prático",
   },
 ];
 
